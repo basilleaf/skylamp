@@ -26,6 +26,26 @@ planets = {
     'saturn': (sat.alt, sat.az, sat.mag),
 }
 
+# nastyh hacker
+pin_code = {
+    ('mercury','E'): 1,
+    ('mercury','C'): 2,
+    ('mercury','W'): 3,
+    ('venus','E'): 4,
+    ('venus','C'): 5,
+    ('venus','W'): 6,
+    ('mars','E'): 7,
+    ('mars','C'): 8,
+    ('mars','W'): 9,
+    ('jupiter','E'): 10,
+    ('jupiter','C'): 11,
+    ('jupiter','W'): 12,
+    ('saturn','E'): 13,
+    ('saturn','C'): 14,
+    ('saturn','W'): 15
+}
+
+
 # < 135 East light -- 135 to 225 Center Light -- > 225 West light
 for p, i in planets.items():
     alt, az, mag = i
@@ -46,5 +66,5 @@ for p, i in planets.items():
         # planet is in the West
         direction = "W"
 
-    msg = "%s %s" % (p, direction )
-    ser.write(msg)
+    msg = pin_code[p, direction]
+    ser.write(str(msg))

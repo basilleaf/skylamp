@@ -1,21 +1,10 @@
 from math import pi
+from time import sleep
 import ephem
 import serial
 
 # setup serial port where arduino is
-ser = serial.Serial('/dev/cu.usbmodem1421', 9600)
-
-# setup pyephem Observer location and date/time
-location = ephem.Observer()
-location.lat = ephem.degrees("37.7749")
-location.long = ephem.degrees("-122.4194")
-location.date = "2016/12/11 03:40:300"  # must be GMT
-
-mer = ephem.Mercury(location)
-ven = ephem.Venus(location)
-mar = ephem.Mars(location)
-jup = ephem.Jupiter(location)
-sat = ephem.Saturn(location)
+ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 
 # Azimuth usually starts from North
 planets = {
@@ -45,26 +34,49 @@ pin_code = {
     ('saturn','W'): 15
 }
 
+demo_dates = ["2016/12/11 03:40:300", "2016/01/01 04:00:000", "2016/01/21 04:00:000", "2016/19/8 11:00:000"]  # must be GMT
+while True:
+    for d in demo_dates:
 
-# < 135 East light -- 135 to 225 Center Light -- > 225 West light
-for p, i in planets.items():
-    alt, az, mag = i
+        # setup pyephem Observer location
+        location = ephem.Observer()
+        location.lat = ephem.degrees(37.7749)
+        location.long = ephem.degrees(-122.4194)
 
-    if 180 * alt / pi < 5:
-        continue # planet is below the horizon
+        mer = ephem.Mercury(location)
+        ven = ephem.Venus(location)
+        mar = ephem.Mars(location)
+        jup = ephem.Jupiter(location)
+        sat = ephem.Saturn(location)
+        location.date = d[0]
 
-    az_degrees = 180 * az / pi
-    if az_degrees <= 135:
-        # planet is in the East
-        direction = "E"
+        print "checking date: %s" % d
 
-    if az_degrees > 135 and az_degrees < 225:
-        # planet is in the South
-        direction = "S"
+        # < 135 East light -- 135 to 225 Center Light -- > 225 West light
+        for p, i in planets.items():
 
-    if az_degrees >= 135:
-        # planet is in the West
-        direction = "W"
+            alt, az, mag = i
 
-    msg = pin_code[p, direction]
-    ser.write(str(msg))
+            print p, 180 * az / pi
+
+            if 180 * alt / pi < 5:
+                continue # planet is below the horizon
+
+            az_degrees = 180 * az / pi
+            if az_degrees <= 135:
+                # planet is in the East
+                direction = "E"
+
+            if az_degrees > 135 and az_degrees < 225:
+                # planet is in the South
+                direction = "S"
+
+            if az_degrees >= 135:
+                # planet is in the West
+                direction = "W"
+
+            msg = pin_code[p, direction]
+            print p, direction, msg
+            ser.write(str(msg) + ';')
+
+        sleep(5)

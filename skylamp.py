@@ -2,10 +2,9 @@ import ephem
 
 kpno = ephem.Observer()
 
-kpno.long = ephem.degrees("-7.44111")
-kpno.lat = ephem.degrees("31.9533")
-kpno.elevation = 1925.0 + 700.0
-kpno.date = "2010/1/1"
+kpno.long = ephem.degrees("122.4194")
+kpno.lat = ephem.degrees("37.7749")
+kpno.date = "2016/11/12 19:50:300"
 
 jupiter = ephem.Jupiter(kpno)
 saturn = ephem.Saturn(kpno)

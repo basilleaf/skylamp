@@ -6,7 +6,7 @@ import serial
 # setup serial port where arduino is
 ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 
-# Azimuth usually starts from North
+# Azimuth in pyephome starts from North and runs clockwise
 planets = {
     'mercury': (mer.alt, mer.az, mer.mag),
     'venus': (ven.alt, ven.az, ven.mag),
@@ -15,7 +15,7 @@ planets = {
     'saturn': (sat.alt, sat.az, sat.mag),
 }
 
-# nastyh hacker
+# nasty hacker
 pin_code = {
     ('mercury','E'): 1,
     ('mercury','C'): 2,
@@ -35,8 +35,9 @@ pin_code = {
 }
 
 demo_dates = ["2016/12/11 03:40:300", "2016/01/01 04:00:000", "2016/01/21 04:00:000", "2016/19/8 11:00:000"]  # must be GMT
+
 while True:
-    for d in demo_dates:
+    for k,d in enumerate(demo_dates):
 
         # setup pyephem Observer location
         location = ephem.Observer()
@@ -57,8 +58,6 @@ while True:
 
             alt, az, mag = i
 
-            print p, 180 * az / pi
-
             if 180 * alt / pi < 5:
                 continue # planet is below the horizon
 
@@ -75,8 +74,13 @@ while True:
                 # planet is in the West
                 direction = "W"
 
-            msg = pin_code[p, direction]
+            # if direction:
+            msg = pin_code[(p, direction)]
             print p, direction, msg
-            ser.write(str(msg) + ';')
 
+            ser.write(str(msg) + ';')
+            del msg
+            del direction
+
+        del location
         sleep(5)

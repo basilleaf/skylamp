@@ -1,6 +1,7 @@
 from __future__ import print_function
 from math import pi
 from time import sleep
+from datetime import datetime
 import ephem
 import serial
 
@@ -31,7 +32,8 @@ pin_codes = {
     ('saturn','W'): 15
 }
 
-current_date_time = "2016/11/30 02:55:00"
+d = datetime.utcnow()
+current_date_time = d.strftime('%Y/%m/%d %H:%M:00')
 
 # setup pyephem Observer location
 location = ephem.Observer()

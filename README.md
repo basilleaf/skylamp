@@ -22,7 +22,7 @@ No need to pull out that phone, your Skylamp's got you covered.
 
 #### Contributing
 
-See [Issues](/issues)
+See [Issues](https://github.com/basilleaf/skylamp/issues)
 
 #### Credits
 

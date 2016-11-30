@@ -41,16 +41,14 @@ location.lat = ephem.degrees('37.7749')
 location.long = ephem.degrees('-122.4194')
 location.date = ephem.Date(current_date_time)
 
+# the 5 naked-eye planets
 mer = ephem.Mercury(location)
 ven = ephem.Venus(location)
 mar = ephem.Mars(location)
 jup = ephem.Jupiter(location)
 sat = ephem.Saturn(location)
 
-mar.compute(location)
-print(mar.alt, mar.az, mar.mag)
-
-# Azimuth in pyephome starts from North and runs clockwise
+# collect the alt, az, mag of our 5 planets
 planets = {
     'mercury': (mer.alt, mer.az, mer.mag),
     'venus': (ven.alt, ven.az, ven.mag),
@@ -59,7 +57,7 @@ planets = {
     'saturn': (sat.alt, sat.az, sat.mag),
 }
 
-# < 135 East light -- 135 to 225 Center Light -- > 225 West light
+# look for each planet in the sky
 for p, i in planets.items():
 
     alt, az, mag = i
@@ -74,7 +72,7 @@ for p, i in planets.items():
         direction = "E"
 
     if az_deg > 135 and az_deg < 225:
-        # planet is in the South
+        # planet is due South
         direction = "S"
 
     if az_deg >= 135:

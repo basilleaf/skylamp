@@ -9,11 +9,12 @@ No need to pull out that phone, your Skylamp's got you covered.
 
 #### Hardware
 
-- Arduino Uno
+- Arduino Uno 
 - Large piece of ABS plastic
 - Drill
 - LEDs
 - Breadboard
+- a computer running python that is connected to Arduino over usb
 
 #### Software
 

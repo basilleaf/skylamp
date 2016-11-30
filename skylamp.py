@@ -64,7 +64,7 @@ for p, i in planets.items():
 
     alt_deg = 180 * alt / pi
     if alt_deg < 5:
-        continue # planet is below the horizon
+        continue  # planet is below the horizon
 
     az_deg = 180 * az / pi
     if az_deg <= 135:
@@ -79,15 +79,15 @@ for p, i in planets.items():
         # planet is in the West
         direction = "W"
 
-    # if direction:
     pin = pin_codes[(p, direction)]
     msg = (p, direction, pin)
-    if debug:
+
+    if not debug:
+        ser.write(str(msg) + ';')  # tell the Arduino which pin to light
+    else:
         print(msg)
         print('alt: %s, az: %s, mag: %s' % (str(alt_deg), str(az_deg), str(mag)))
         print()
-    if not debug:
-        ser.write(str(msg) + ';')
 
     del msg
     del direction
